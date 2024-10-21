@@ -1,7 +1,14 @@
+import { Logger, ValidationPipe } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as dotenv from 'dotenv';
 
 import { AppModule } from './app.module';
+import { SwaggerHelper } from './common/helpers/swagger.helper';
+import { AppConfig } from './configs/config.type';
+
+dotenv.config({ path: './environments/local.env' });
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -17,7 +24,9 @@ async function bootstrap() {
       bearerFormat: 'JWT',
     })
     .build();
+
   const document = SwaggerModule.createDocument(app, config);
+  SwaggerHelper.setDefaultResponses(document);
   SwaggerModule.setup('docs', app, document, {
     swaggerOptions: {
       docExpansion: 'list',
@@ -26,12 +35,21 @@ async function bootstrap() {
     },
   });
 
-  const PORT = 3000;
-  const HOST = 'localhost';
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true,
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
 
-  await app.listen(PORT, () => {
-    console.log(`Server: http://${HOST}:${PORT}`);
-    console.log(`Swagger: http://${HOST}:${PORT}/docs`);
+  const configService = app.get(ConfigService);
+  const appConfig = configService.get<AppConfig>('app');
+
+  await app.listen(appConfig.port, () => {
+    const url = `http://${appConfig.host}:${appConfig.port}`;
+    Logger.log(`Server: ${url}`);
+    Logger.log(`Swagger: ${url}/docs`);
   });
 }
 
