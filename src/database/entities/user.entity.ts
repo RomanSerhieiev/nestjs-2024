@@ -1,9 +1,12 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+
+import { ArticleEntity } from './article.entity';
+import { RefreshTokenEntity } from './refresh-token.entity';
 
 @Entity('users')
 export class UserEntity {
   @PrimaryGeneratedColumn('uuid')
-  _id: number;
+  id: number;
 
   @Column('text', { nullable: true })
   name: string;
@@ -16,4 +19,10 @@ export class UserEntity {
 
   @Column('boolean', { default: false })
   isVerified: boolean;
+
+  @OneToMany(() => RefreshTokenEntity, (entity) => entity.user)
+  refreshTokens: RefreshTokenEntity[];
+
+  @OneToMany(() => ArticleEntity, (entity) => entity.user)
+  articles: ArticleEntity[];
 }

@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiConflictResponse, ApiTags } from '@nestjs/swagger';
 
@@ -27,6 +28,7 @@ export class UsersController {
 
   @Get()
   public async findAll(): Promise<UserResDto> {
+    throw new UnprocessableEntityException('asdf');
     return await this.usersService.findAll();
   }
 

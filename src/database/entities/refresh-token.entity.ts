@@ -3,30 +3,23 @@ import {
   CreateDateColumn,
   Entity,
   JoinColumn,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
-  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-import { TagEntity } from './tag.entity';
 import { UserEntity } from './user.entity';
 
-@Entity('articles')
-export class ArticleEntity {
+@Entity('refresh-tokens')
+export class RefreshTokenEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column('text')
-  title: string;
+  refreshToken: string;
 
   @Column('text')
-  description: string;
-
-  @Column('text')
-  body: string;
+  deviceId: string;
 
   @CreateDateColumn()
   created: Date;
@@ -36,11 +29,7 @@ export class ArticleEntity {
 
   @Column('uuid')
   userId: string;
-  @ManyToOne(() => UserEntity, (entity) => entity.articles)
+  @ManyToOne(() => UserEntity, (entity) => entity.refreshTokens)
   @JoinColumn({ name: 'userId' })
   user: UserEntity;
-
-  @ManyToMany(() => TagEntity, (entity) => entity.articles)
-  @JoinTable()
-  tags: TagEntity[];
 }
