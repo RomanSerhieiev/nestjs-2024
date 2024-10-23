@@ -18,8 +18,7 @@ export class UserBaseDto {
     example: 'a9b6c2f1-dbb7-4b72-8eb5-82a74c8c918e',
   })
   @IsUUID()
-  @Transform(TransformHelper.trim)
-  readonly _id: string;
+  readonly id: string;
 
   @ApiProperty({
     description: 'Name of the user',

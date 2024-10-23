@@ -2,29 +2,24 @@ import {
   Column,
   CreateDateColumn,
   Entity,
-  JoinColumn,
   ManyToMany,
-  ManyToOne,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
-import { ArticleEntity } from './article.entity';
-import { UserEntity } from './user.entity';
+import { ArticleToTagEntity } from './article-to-tag.entity';
+import { ETableName } from './enums/table-name.enum';
+import { CreatedAndUpdatedModel } from './models/created-updated.model';
 
-@Entity('tags')
-export class TagEntity {
+@Entity(ETableName.TAGS)
+export class TagEntity extends CreatedAndUpdatedModel {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column('text')
   name: string;
-  @CreateDateColumn()
-  created: Date;
 
-  @UpdateDateColumn()
-  updated: Date;
-
-  @ManyToMany(() => ArticleEntity, (entity) => entity.tags)
-  articles: ArticleEntity[];
+  @OneToMany(() => ArticleToTagEntity, (entity) => entity.tag)
+  articles?: ArticleToTagEntity[];
 }

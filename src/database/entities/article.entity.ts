@@ -1,46 +1,45 @@
 import {
   Column,
-  CreateDateColumn,
   Entity,
   JoinColumn,
-  JoinTable,
-  ManyToMany,
   ManyToOne,
   OneToMany,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 
-import { TagEntity } from './tag.entity';
+import { ArticleToTagEntity } from './article-to-tag.entity';
+import { CommentEntity } from './comment.entity';
+import { ETableName } from './enums/table-name.enum';
+import { LikeEntity } from './like.entity';
+import { CreatedAndUpdatedModel } from './models/created-updated.model';
 import { UserEntity } from './user.entity';
 
-@Entity('articles')
-export class ArticleEntity {
+@Entity(ETableName.ARTICLES)
+export class ArticleEntity extends CreatedAndUpdatedModel {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column('text')
   title: string;
 
-  @Column('text')
-  description: string;
+  @Column('text', { nullable: true })
+  description?: string;
 
   @Column('text')
   body: string;
 
-  @CreateDateColumn()
-  created: Date;
-
-  @UpdateDateColumn()
-  updated: Date;
-
   @Column('uuid')
-  userId: string;
+  user_id: string;
   @ManyToOne(() => UserEntity, (entity) => entity.articles)
-  @JoinColumn({ name: 'userId' })
-  user: UserEntity;
+  @JoinColumn({ name: 'user_id' })
+  user?: UserEntity;
 
-  @ManyToMany(() => TagEntity, (entity) => entity.articles)
-  @JoinTable()
-  tags: TagEntity[];
+  @OneToMany(() => ArticleToTagEntity, (entity) => entity.article)
+  tags?: ArticleToTagEntity[];
+
+  @OneToMany(() => LikeEntity, (entity) => entity.article)
+  likes?: LikeEntity[];
+
+  @OneToMany(() => CommentEntity, (entity) => entity.article)
+  comments?: CommentEntity[];
 }

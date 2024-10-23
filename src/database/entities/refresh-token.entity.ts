@@ -1,17 +1,17 @@
 import {
   Column,
-  CreateDateColumn,
   Entity,
   JoinColumn,
   ManyToOne,
   PrimaryGeneratedColumn,
-  UpdateDateColumn,
 } from 'typeorm';
 
+import { ETableName } from './enums/table-name.enum';
+import { CreatedModel } from './models/created-updated.model';
 import { UserEntity } from './user.entity';
 
-@Entity('refresh-tokens')
-export class RefreshTokenEntity {
+@Entity(ETableName.REFRESH_TOKENS)
+export class RefreshTokenEntity extends CreatedModel {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -21,15 +21,9 @@ export class RefreshTokenEntity {
   @Column('text')
   deviceId: string;
 
-  @CreateDateColumn()
-  created: Date;
-
-  @UpdateDateColumn()
-  updated: Date;
-
   @Column('uuid')
-  userId: string;
+  user_id: string;
   @ManyToOne(() => UserEntity, (entity) => entity.refreshTokens)
-  @JoinColumn({ name: 'userId' })
-  user: UserEntity;
+  @JoinColumn({ name: 'user_id' })
+  user?: UserEntity;
 }
