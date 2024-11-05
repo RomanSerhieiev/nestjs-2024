@@ -1,24 +1,15 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  OneToMany,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
 
 import { ArticleToTagEntity } from './article-to-tag.entity';
 import { CommentEntity } from './comment.entity';
-import { ETableName } from './enums/table-name.enum';
+import { EEntity } from './enums/entity.enum';
 import { LikeEntity } from './like.entity';
-import { CreatedAndUpdatedModel } from './models/created-updated.model';
+import { IdCreatedUpdated } from './models/created-updated.model';
+import { ArticleID, UserID } from './types/id.type';
 import { UserEntity } from './user.entity';
 
-@Entity(ETableName.ARTICLES)
-export class ArticleEntity extends CreatedAndUpdatedModel {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+@Entity(EEntity.ARTICLES)
+export class ArticleEntity extends IdCreatedUpdated<ArticleID> {
   @Column('text')
   title: string;
 
@@ -29,7 +20,7 @@ export class ArticleEntity extends CreatedAndUpdatedModel {
   body: string;
 
   @Column('uuid')
-  user_id: string;
+  user_id: UserID;
   @ManyToOne(() => UserEntity, (entity) => entity.articles)
   @JoinColumn({ name: 'user_id' })
   user?: UserEntity;

@@ -1,18 +1,16 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 
 import { ArticleEntity } from './article.entity';
 import { CommentEntity } from './comment.entity';
-import { ETableName } from './enums/table-name.enum';
+import { EEntity } from './enums/entity.enum';
 import { FollowEntity } from './follow.entity';
 import { LikeEntity } from './like.entity';
-import { CreatedAndUpdatedModel } from './models/created-updated.model';
+import { IdCreatedUpdated } from './models/created-updated.model';
 import { RefreshTokenEntity } from './refresh-token.entity';
+import { UserID } from './types/id.type';
 
-@Entity(ETableName.USERS)
-export class UserEntity extends CreatedAndUpdatedModel {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+@Entity(EEntity.USERS)
+export class UserEntity extends IdCreatedUpdated<UserID> {
   @Column('text')
   name: string;
 

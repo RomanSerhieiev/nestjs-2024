@@ -2,29 +2,30 @@ import { Module } from '@nestjs/common';
 import { APP_FILTER } from '@nestjs/core';
 
 import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
-import { ArticlesModule } from './modules/articles/articles.module';
+import { ArticleModule } from './modules/articles/article.module';
 import { AuthModule } from './modules/auth/auth.module';
-import { CommentsModule } from './modules/comments/comments.module';
+import { CommentModule } from './modules/comments/comment.module';
 import { AppConfigModule } from './modules/config/conig.module';
 import { HealthModule } from './modules/health/health.module';
 import { LoggerModule } from './modules/logger/logger.module';
 import { PostgresModule } from './modules/postgres/postgres.module';
 import { RedisModule } from './modules/redis/redis.module';
 import { RepositoryModule } from './modules/repository/repository.module';
-import { UsersModule } from './modules/users/users.module';
+import { UserModule } from './modules/users/user.module';
 
 @Module({
   imports: [
     AppConfigModule,
+    LoggerModule,
     PostgresModule,
     RedisModule,
-    LoggerModule,
     RepositoryModule,
-    UsersModule,
-    ArticlesModule,
-    CommentsModule,
-    HealthModule,
+
+    ArticleModule,
     AuthModule,
+    CommentModule,
+    HealthModule,
+    UserModule,
   ],
   controllers: [],
   providers: [

@@ -1,22 +1,12 @@
-import {
-  Column,
-  CreateDateColumn,
-  Entity,
-  ManyToMany,
-  OneToMany,
-  PrimaryGeneratedColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { Column, Entity, OneToMany } from 'typeorm';
 
 import { ArticleToTagEntity } from './article-to-tag.entity';
-import { ETableName } from './enums/table-name.enum';
-import { CreatedAndUpdatedModel } from './models/created-updated.model';
+import { EEntity } from './enums/entity.enum';
+import { IdCreatedUpdated } from './models/created-updated.model';
+import { TagID } from './types/id.type';
 
-@Entity(ETableName.TAGS)
-export class TagEntity extends CreatedAndUpdatedModel {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+@Entity(EEntity.TAGS)
+export class TagEntity extends IdCreatedUpdated<TagID> {
   @Column('text')
   name: string;
 

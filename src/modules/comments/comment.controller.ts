@@ -12,12 +12,12 @@ import { ApiBearerAuth, ApiConflictResponse, ApiTags } from '@nestjs/swagger';
 import { CreateCommentReqDto } from './models/dto/req/create-comment.req.dto';
 import { UpdateCommentReqDto } from './models/dto/req/update-comment.req.dto';
 import { CommentResDto } from './models/dto/res/comment.res.dto';
-import { CommentsService } from './services/comments.service';
+import { CommentService } from './services/comment.service';
 
 @ApiTags('Comments')
 @Controller('comments')
-export class CommentsController {
-  constructor(private readonly commentsService: CommentsService) {}
+export class CommentController {
+  constructor(private readonly commentsService: CommentService) {}
 
   @ApiBearerAuth()
   @ApiConflictResponse({ description: 'Conflict' })

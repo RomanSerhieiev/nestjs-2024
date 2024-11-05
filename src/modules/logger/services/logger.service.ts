@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import * as Sentry from '@sentry/nestjs';
 import { nodeProfilingIntegration } from '@sentry/profiling-node';
 
+import { EConfig } from '../../../configs/config.enum';
 import { Config, SentryConfig } from '../../../configs/config.type';
 
 @Injectable()
@@ -11,7 +12,7 @@ export class LoggerService {
   private readonly logger = new Logger();
 
   constructor(private readonly configService: ConfigService<Config>) {
-    const sentryConfig = this.configService.get<SentryConfig>('sentry');
+    const sentryConfig = this.configService.get<SentryConfig>(EConfig.SENTRY);
     this.isLocal = sentryConfig.env === 'local';
 
     Sentry.init({

@@ -1,10 +1,7 @@
-import { PickType } from '@nestjs/swagger';
+import { UserResDto } from '../../../../users/models/dto/res/user.res.dto';
+import { TokenPairResDto } from './token-pair.res.dto';
 
-import { AuthBaseDto } from '../auth-base.dto';
-
-export class AuthResDto extends PickType(AuthBaseDto, [
-  'email',
-  'isVerified',
-  'createdAt',
-  'updatedAt',
-] as const) {}
+export class AuthResDto {
+  tokenPair: TokenPairResDto;
+  user: UserResDto;
+}

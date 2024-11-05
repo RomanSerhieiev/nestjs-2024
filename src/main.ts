@@ -5,8 +5,8 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import * as dotenv from 'dotenv';
 
 import { AppModule } from './app.module';
-import { GlobalExceptionFilter } from './common/filters/global-exception.filter';
 import { SwaggerHelper } from './common/helpers/swagger.helper';
+import { EConfig } from './configs/config.enum';
 import { AppConfig } from './configs/config.type';
 
 dotenv.config({ path: './environments/local.env' });
@@ -45,7 +45,7 @@ async function bootstrap() {
   );
 
   const configService = app.get(ConfigService);
-  const appConfig = configService.get<AppConfig>('app');
+  const appConfig = configService.get<AppConfig>(EConfig.APP);
 
   await app.listen(appConfig.port, () => {
     const url = `http://${appConfig.host}:${appConfig.port}`;

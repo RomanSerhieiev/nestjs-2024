@@ -1,4 +1,4 @@
-export enum ETableName {
+export enum EEntity {
   ARTICLES = 'articles',
   ARTICLES_TO_TAGS = 'articles-to-tags',
   COMMENTS = 'comments',

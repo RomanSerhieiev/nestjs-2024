@@ -1,20 +1,12 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
-import { ETableName } from './enums/table-name.enum';
-import { CreatedModel } from './models/created-updated.model';
+import { EEntity } from './enums/entity.enum';
+import { IdCreated } from './models/created-updated.model';
+import { RefreshTokenID, UserID } from './types/id.type';
 import { UserEntity } from './user.entity';
 
-@Entity(ETableName.REFRESH_TOKENS)
-export class RefreshTokenEntity extends CreatedModel {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+@Entity(EEntity.REFRESH_TOKENS)
+export class RefreshTokenEntity extends IdCreated<RefreshTokenID> {
   @Column('text')
   refreshToken: string;
 
@@ -22,8 +14,10 @@ export class RefreshTokenEntity extends CreatedModel {
   deviceId: string;
 
   @Column('uuid')
-  user_id: string;
-  @ManyToOne(() => UserEntity, (entity) => entity.refreshTokens)
+  user_id: UserID;
+  @ManyToOne(() => UserEntity, (entity) => entity.refreshTokens, {
+    onDelete: 'CASCADE',
+  })
   @JoinColumn({ name: 'user_id' })
   user?: UserEntity;
 }

@@ -5,7 +5,7 @@ import { UpdateCommentReqDto } from '../models/dto/req/update-comment.req.dto';
 import { CommentResDto } from '../models/dto/res/comment.res.dto';
 
 @Injectable()
-export class CommentsService {
+export class CommentService {
   public async create(dto: CreateCommentReqDto): Promise<CommentResDto> {
     return 'This action adds a new comment' as unknown as CommentResDto;
   }

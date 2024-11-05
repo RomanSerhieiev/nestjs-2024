@@ -12,12 +12,12 @@ import { ApiBearerAuth, ApiConflictResponse, ApiTags } from '@nestjs/swagger';
 import { CreateArticleReqDto } from './models/dto/req/create-article.req.dto';
 import { UpdateArticleReqDto } from './models/dto/req/update-article.req.dto';
 import { ArticleResDto } from './models/dto/res/article.res.dto';
-import { ArticlesService } from './services/articles.service';
+import { ArticleService } from './services/article.service';
 
 @ApiTags('Articles')
 @Controller('articles')
-export class ArticlesController {
-  constructor(private readonly articlesService: ArticlesService) {}
+export class ArticleController {
+  constructor(private readonly articlesService: ArticleService) {}
 
   @ApiBearerAuth()
   @ApiConflictResponse({ description: 'Conflict' })

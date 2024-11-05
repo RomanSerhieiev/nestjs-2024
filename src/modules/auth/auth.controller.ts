@@ -1,17 +1,14 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
-import { ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Post, Put, UseGuards } from '@nestjs/common';
+import { ApiBearerAuth, ApiConflictResponse, ApiTags } from '@nestjs/swagger';
 
-import { CreateAuthDto } from './models/dto/req/create-auth.dto';
-import { UpdateAuthDto } from './models/dto/req/update-auth.dto';
+import { IUserData } from '../users/models/interfaces/user-data.interface';
+import { CurrentUser } from './decorators/current-user.decorator';
+import { SkipAuth } from './decorators/skip-auth.decorator';
+import { JwtRefreshGuard } from './guards/jwt-refresh.guard';
+import { SignInReqDto } from './models/dto/req/sign-in.req.dto';
+import { SignUpReqDto } from './models/dto/req/sign-up.req.dto';
 import { AuthResDto } from './models/dto/res/auth.res.dto';
+import { TokenPairResDto } from './models/dto/res/token-pair.res.dto';
 import { AuthService } from './services/auth.service';
 
 @ApiTags('Auth')
@@ -19,33 +16,71 @@ import { AuthService } from './services/auth.service';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Post()
-  public async create(
-    @Body() createAuthDto: CreateAuthDto,
-  ): Promise<AuthResDto> {
-    return await this.authService.create(createAuthDto);
+  @SkipAuth()
+  @ApiConflictResponse({ description: 'Conflict' })
+  @Post('sign-up')
+  public async signUp(@Body() dto: SignUpReqDto): Promise<AuthResDto> {
+    return await this.authService.signUp(dto);
   }
 
-  @Get()
-  public async findAll(): Promise<AuthResDto> {
-    return await this.authService.findAll();
+  @SkipAuth()
+  @ApiConflictResponse({ description: 'Conflict' })
+  @Put('sign-up')
+  public async verify(): Promise<any> {
+    //TODO verify
+    return await this.authService.verify();
   }
 
-  @Get(':id')
-  public async findOne(@Param('id') id: string): Promise<AuthResDto> {
-    return await this.authService.findOne(+id);
+  @SkipAuth()
+  @Post('sign-in')
+  public async signIn(@Body() dto: SignInReqDto): Promise<AuthResDto> {
+    return await this.authService.signIn(dto);
   }
 
-  @Patch(':id')
-  public async update(
-    @Param('id') id: string,
-    @Body() updateAuthDto: UpdateAuthDto,
-  ): Promise<AuthResDto> {
-    return await this.authService.update(+id, updateAuthDto);
+  @ApiBearerAuth()
+  @Post('sign-out/current-device')
+  public async signOutCurrentDevice(
+    @CurrentUser() userData: IUserData,
+  ): Promise<void> {
+    return await this.authService.signOut(userData);
   }
 
-  @Delete(':id')
-  public async remove(@Param('id') id: string): Promise<AuthResDto> {
-    return await this.authService.remove(+id);
+  @ApiBearerAuth()
+  @Post('sign-out/all-devices')
+  public async signOutAllDevices(
+    @CurrentUser() userData: IUserData,
+  ): Promise<void> {
+    return await this.authService.signOut(userData, true);
+  }
+
+  @SkipAuth()
+  @ApiBearerAuth()
+  @UseGuards(JwtRefreshGuard)
+  @Post('refresh')
+  public async refresh(
+    @CurrentUser() userData: IUserData,
+  ): Promise<TokenPairResDto> {
+    return await this.authService.refresh(userData);
+  }
+
+  @SkipAuth()
+  @Post('password/change')
+  public async changePassword(): Promise<any> {
+    //TODO changePassword
+    return await this.authService.changePassword();
+  }
+
+  @SkipAuth()
+  @Post('password/forgot')
+  public async forgotPassword(): Promise<any> {
+    //TODO forgotPassword
+    return await this.authService.forgotPassword();
+  }
+
+  @SkipAuth()
+  @Put('password/forgot')
+  public async setPassword(): Promise<any> {
+    //TODO setPassword
+    return await this.authService.setPassword();
   }
 }

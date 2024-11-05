@@ -1,28 +1,20 @@
-import {
-  Column,
-  Entity,
-  JoinColumn,
-  ManyToOne,
-  PrimaryGeneratedColumn,
-} from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
-import { ETableName } from './enums/table-name.enum';
-import { CreatedModel } from './models/created-updated.model';
+import { EEntity } from './enums/entity.enum';
+import { IdCreated } from './models/created-updated.model';
+import { FollowID, UserID } from './types/id.type';
 import { UserEntity } from './user.entity';
 
-@Entity(ETableName.FOLLOWS)
-export class FollowEntity extends CreatedModel {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
-
+@Entity(EEntity.FOLLOWS)
+export class FollowEntity extends IdCreated<FollowID> {
   @Column('uuid')
-  follower_id: string;
+  follower_id: UserID;
   @ManyToOne(() => UserEntity, (entity) => entity.followings)
   @JoinColumn({ name: 'follower_id' })
   follower?: UserEntity;
 
   @Column('uuid')
-  following_id: string;
+  following_id: UserID;
   @ManyToOne(() => UserEntity, (entity) => entity.followers)
   @JoinColumn({ name: 'following_id' })
   following?: UserEntity;

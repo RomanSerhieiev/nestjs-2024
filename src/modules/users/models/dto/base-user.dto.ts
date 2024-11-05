@@ -1,24 +1,28 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Transform, Type } from 'class-transformer';
 import {
-  IsBoolean,
   IsDate,
   IsEmail,
   IsNotEmpty,
   IsOptional,
   IsString,
   IsUUID,
+  Length,
+  Matches,
 } from 'class-validator';
 
+import { regexConstant } from '../../../../common/constants/regex.constant';
 import { TransformHelper } from '../../../../common/helpers/transform.helper';
+import { UserID } from '../../../../database/entities/types/id.type';
 
-export class UserBaseDto {
+export class BaseUserDto {
   @ApiProperty({
     description: 'Unique identifier for the user',
     example: 'a9b6c2f1-dbb7-4b72-8eb5-82a74c8c918e',
   })
   @IsUUID()
-  readonly id: string;
+  @Type(() => String)
+  readonly id: UserID;
 
   @ApiProperty({
     description: 'Name of the user',
@@ -26,7 +30,9 @@ export class UserBaseDto {
   })
   @IsString()
   @IsNotEmpty()
+  @Length(3, 50)
   @Transform(TransformHelper.trim)
+  @Type(() => String)
   readonly name: string;
 
   @ApiProperty({
@@ -35,27 +41,41 @@ export class UserBaseDto {
   })
   @IsEmail()
   @IsNotEmpty()
+  @Length(0, 300)
   @Transform(TransformHelper.trim)
   @Transform(TransformHelper.toLowerCase)
+  @Matches(regexConstant.EMAIL)
   readonly email: string;
 
   @ApiProperty({
     description: 'Password of the user',
-    example: 'strongpassword123',
+    example: 'QWErty!@#123',
   })
   @IsString()
   @IsNotEmpty()
   @Transform(TransformHelper.trim)
+  @Matches(regexConstant.PASSWORD)
   readonly password: string;
 
   @ApiProperty({
-    description: 'User verification status',
-    example: true,
+    description: 'Optional bio of the user',
+    example: 'Software developer with a passion for open-source projects.',
+    required: false,
   })
-  @IsBoolean()
+  @IsString()
   @IsOptional()
-  @Type(() => Boolean)
-  readonly isVerified?: boolean;
+  @Length(0, 300)
+  readonly bio?: string;
+
+  @ApiProperty({
+    description: 'Optional profile image URL of the user',
+    example: 'https://example.com/profile.jpg',
+    required: false,
+  })
+  @IsString()
+  @IsOptional()
+  @Length(0, 3000)
+  readonly image?: string;
 
   @ApiProperty({
     description: 'Date when the user was created',
@@ -63,7 +83,7 @@ export class UserBaseDto {
   })
   @IsDate()
   @Type(() => Date)
-  readonly createdAt: Date;
+  readonly created: Date;
 
   @ApiProperty({
     description: 'Date when the user was last updated',
@@ -71,5 +91,5 @@ export class UserBaseDto {
   })
   @IsDate()
   @Type(() => Date)
-  readonly updatedAt: Date;
+  readonly updated: Date;
 }

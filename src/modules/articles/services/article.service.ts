@@ -5,7 +5,7 @@ import { UpdateArticleReqDto } from '../models/dto/req/update-article.req.dto';
 import { ArticleResDto } from '../models/dto/res/article.res.dto';
 
 @Injectable()
-export class ArticlesService {
+export class ArticleService {
   public async create(dto: CreateArticleReqDto): Promise<ArticleResDto> {
     return 'This action adds a new article' as unknown as ArticleResDto;
   }
