@@ -5,7 +5,7 @@ import { CommentEntity } from './comment.entity';
 import { EEntity } from './enums/entity.enum';
 import { FollowEntity } from './follow.entity';
 import { LikeEntity } from './like.entity';
-import { IdCreatedUpdated } from './models/created-updated.model';
+import { IdCreatedUpdated } from './models/id-created-updated.model';
 import { RefreshTokenEntity } from './refresh-token.entity';
 import { UserID } from './types/id.type';
 

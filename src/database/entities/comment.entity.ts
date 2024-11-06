@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 import { ArticleEntity } from './article.entity';
 import { EEntity } from './enums/entity.enum';
-import { IdCreatedUpdated } from './models/created-updated.model';
+import { IdCreatedUpdated } from './models/id-created-updated.model';
 import { ArticleID, CommentID, UserID } from './types/id.type';
 import { UserEntity } from './user.entity';
 

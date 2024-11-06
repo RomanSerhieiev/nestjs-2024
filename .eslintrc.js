@@ -2,6 +2,7 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: 'tsconfig.json',
+    tsconfigRootDir: __dirname,
     sourceType: 'module',
   },
   plugins: [
@@ -41,5 +42,5 @@ module.exports = {
       'allowSeparatedGroups': false
     }],
   },
-  ignorePatterns: ['.eslintrc.js', '**/*.generated.ts', '**/migrations/*.ts']
+  ignorePatterns: ['.eslintrc.js', '**/*.generated.ts', '/data', '/dist/**', '/node_modules/**', '**/migrations/*.ts']
 };

@@ -4,7 +4,7 @@ import { ArticleToTagEntity } from './article-to-tag.entity';
 import { CommentEntity } from './comment.entity';
 import { EEntity } from './enums/entity.enum';
 import { LikeEntity } from './like.entity';
-import { IdCreatedUpdated } from './models/created-updated.model';
+import { IdCreatedUpdated } from './models/id-created-updated.model';
 import { ArticleID, UserID } from './types/id.type';
 import { UserEntity } from './user.entity';
 

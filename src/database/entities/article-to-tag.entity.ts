@@ -2,7 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 import { ArticleEntity } from './article.entity';
 import { EEntity } from './enums/entity.enum';
-import { IdCreated } from './models/created-updated.model';
+import { IdCreated } from './models/id-created-updated.model';
 import { TagEntity } from './tag.entity';
 import { ArticleID, ArticleToTagID, TagID } from './types/id.type';
 

@@ -1,7 +1,7 @@
 import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
 
 import { EEntity } from './enums/entity.enum';
-import { IdCreated } from './models/created-updated.model';
+import { IdCreated } from './models/id-created-updated.model';
 import { FollowID, UserID } from './types/id.type';
 import { UserEntity } from './user.entity';
 
