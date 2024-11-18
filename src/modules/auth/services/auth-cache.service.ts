@@ -17,11 +17,7 @@ export class AuthCacheService {
     this.jwtConfig = this.configService.get(EConfig.JWT);
   }
 
-  public async saveToken(
-    token: string,
-    userId: UserID,
-    deviceId: string,
-  ): Promise<void> {
+  public async saveToken(token: string, userId: UserID, deviceId: string): Promise<void> {
     const key = this.getKey(userId, deviceId);
 
     await this.redisService.deleteByKey(key);

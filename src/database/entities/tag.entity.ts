@@ -1,15 +1,19 @@
-import { Column, Entity, OneToMany } from 'typeorm';
+import { Column, Entity, JoinTable, ManyToMany, VirtualColumn } from 'typeorm';
 
-import { ArticleToTagEntity } from './article-to-tag.entity';
+import { ArticleEntity } from './article.entity';
 import { EEntity } from './enums/entity.enum';
-import { IdCreatedUpdated } from './models/id-created-updated.model';
+import { IdCreated } from './models/id-created-updated.model';
 import { TagID } from './types/id.type';
 
 @Entity(EEntity.TAGS)
-export class TagEntity extends IdCreatedUpdated<TagID> {
+export class TagEntity extends IdCreated<TagID> {
   @Column('text')
   name: string;
 
-  @OneToMany(() => ArticleToTagEntity, (entity) => entity.tag)
-  articles?: ArticleToTagEntity[];
+  @ManyToMany(() => ArticleEntity, (entity) => entity.tags)
+  @JoinTable()
+  articles?: ArticleEntity[];
+
+  @VirtualColumn({ query: () => 'NULL' })
+  articleCount?: number;
 }

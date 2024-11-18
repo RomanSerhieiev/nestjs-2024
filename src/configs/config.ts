@@ -1,3 +1,5 @@
+import { ObjectCannedACL } from '@aws-sdk/client-s3';
+
 import { Config } from './config.type';
 
 export default (): Config => ({
@@ -18,8 +20,12 @@ export default (): Config => ({
     password: process.env.REDIS_PASSWORD,
   },
   aws: {
-    accessKey: process.env.AWS_S3_ACCESS_KEY,
-    secretKey: process.env.AWS_S3_SECRET_KEY,
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: process.env.AWS_S3_REGION,
+    bucket: process.env.AWS_S3_BUCKET,
+    acl: process.env.AWS_S3_ACL as ObjectCannedACL,
+    endpoint: process.env.AWS_S3_ENDPOINT,
   },
   sentry: {
     dsn: process.env.SENTRY_DSN,

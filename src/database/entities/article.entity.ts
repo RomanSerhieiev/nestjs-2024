@@ -1,10 +1,10 @@
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from 'typeorm';
+import { Column, Entity, JoinColumn, ManyToMany, ManyToOne, OneToMany } from 'typeorm';
 
-import { ArticleToTagEntity } from './article-to-tag.entity';
 import { CommentEntity } from './comment.entity';
 import { EEntity } from './enums/entity.enum';
 import { LikeEntity } from './like.entity';
 import { IdCreatedUpdated } from './models/id-created-updated.model';
+import { TagEntity } from './tag.entity';
 import { ArticleID, UserID } from './types/id.type';
 import { UserEntity } from './user.entity';
 
@@ -20,13 +20,13 @@ export class ArticleEntity extends IdCreatedUpdated<ArticleID> {
   body: string;
 
   @Column('uuid')
-  user_id: UserID;
+  userId: UserID;
   @ManyToOne(() => UserEntity, (entity) => entity.articles)
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn({ name: 'userId' })
   user?: UserEntity;
 
-  @OneToMany(() => ArticleToTagEntity, (entity) => entity.article)
-  tags?: ArticleToTagEntity[];
+  @ManyToMany(() => TagEntity, (entity) => entity.articles)
+  tags?: TagEntity[];
 
   @OneToMany(() => LikeEntity, (entity) => entity.article)
   likes?: LikeEntity[];

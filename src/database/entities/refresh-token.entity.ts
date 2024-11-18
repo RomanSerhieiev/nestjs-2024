@@ -14,10 +14,10 @@ export class RefreshTokenEntity extends IdCreated<RefreshTokenID> {
   deviceId: string;
 
   @Column('uuid')
-  user_id: UserID;
+  userId: UserID;
   @ManyToOne(() => UserEntity, (entity) => entity.refreshTokens, {
     onDelete: 'CASCADE',
   })
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn({ name: 'userId' })
   user?: UserEntity;
 }

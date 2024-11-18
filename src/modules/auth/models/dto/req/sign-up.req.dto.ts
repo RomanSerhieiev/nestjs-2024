@@ -7,5 +7,6 @@ export class SignUpReqDto extends PickType(BaseAuthDto, [
   'password',
   'bio',
   'image',
+  'name',
   'deviceId',
 ] as const) {}

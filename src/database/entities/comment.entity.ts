@@ -12,14 +12,14 @@ export class CommentEntity extends IdCreatedUpdated<CommentID> {
   body: string;
 
   @Column('uuid')
-  user_id: UserID;
+  userId: UserID;
   @ManyToOne(() => UserEntity, (entity) => entity.comments)
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn({ name: 'userId' })
   user?: UserEntity;
 
   @Column('uuid')
-  article_id: ArticleID;
+  articleId: ArticleID;
   @ManyToOne(() => ArticleEntity, (entity) => entity.comments)
-  @JoinColumn({ name: 'article_id' })
+  @JoinColumn({ name: 'articleId' })
   article?: ArticleEntity;
 }

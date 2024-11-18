@@ -4,7 +4,7 @@ import { ArticleBaseDto } from '../article-base.dto';
 
 export class CreateArticleReqDto extends PickType(ArticleBaseDto, [
   'title',
-  'content',
-  'authorId',
+  'description',
+  'body',
   'tags',
 ] as const) {}

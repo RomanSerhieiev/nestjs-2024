@@ -77,9 +77,12 @@ export class BaseUserDto {
   @Length(0, 3000)
   readonly image?: string;
 
+  readonly isFollowed?: boolean;
+
   @ApiProperty({
     description: 'Date when the user was created',
     example: '2023-01-01T12:00:00Z',
+    type: Date,
   })
   @IsDate()
   @Type(() => Date)
@@ -88,8 +91,18 @@ export class BaseUserDto {
   @ApiProperty({
     description: 'Date when the user was last updated',
     example: '2023-01-02T12:00:00Z',
+    type: Date,
   })
   @IsDate()
   @Type(() => Date)
   readonly updated: Date;
+
+  @ApiProperty({
+    description: 'Date when the user was deleted',
+    example: '2023-01-01T12:00:00Z',
+    type: Date,
+  })
+  @IsDate()
+  @Type(() => Date)
+  readonly deleted: Date;
 }

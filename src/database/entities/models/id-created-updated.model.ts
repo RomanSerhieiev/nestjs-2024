@@ -1,4 +1,9 @@
-import { CreateDateColumn, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  CreateDateColumn,
+  DeleteDateColumn,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 export abstract class IdCreated<T> {
   @PrimaryGeneratedColumn('uuid')
@@ -11,4 +16,12 @@ export abstract class IdCreated<T> {
 export abstract class IdCreatedUpdated<T> extends IdCreated<T> {
   @UpdateDateColumn()
   updated: Date;
+}
+
+export abstract class IdCreatedUpdatedDeleted<T> extends IdCreatedUpdated<T> {
+  @UpdateDateColumn()
+  updated: Date;
+
+  @DeleteDateColumn()
+  deleted: Date;
 }

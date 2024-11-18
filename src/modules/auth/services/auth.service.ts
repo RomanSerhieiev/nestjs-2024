@@ -25,9 +25,7 @@ export class AuthService {
   public async signUp(dto: SignUpReqDto): Promise<AuthResDto> {
     await this.isEmailExist(dto.email);
     const password = await bcrypt.hash(dto.password, 10);
-    const user = await this.userRepository.save(
-      this.userRepository.create({ ...dto, password }),
-    );
+    const user = await this.userRepository.save(this.userRepository.create({ ...dto, password }));
 
     const tokenPair = await this.generateTokenPair(user.id, dto.deviceId);
 
@@ -54,10 +52,7 @@ export class AuthService {
     return { user: UserMapper.toResDto(user), tokenPair };
   }
 
-  public async signOut(
-    userData: IUserData,
-    allDevices?: boolean,
-  ): Promise<void> {
+  public async signOut(userData: IUserData, allDevices?: boolean): Promise<void> {
     if (allDevices) {
       await this.deleteTokenPair(userData.userId);
     } else {
@@ -88,10 +83,7 @@ export class AuthService {
     }
   }
 
-  private async generateTokenPair(
-    userId: UserID,
-    deviceId: string,
-  ): Promise<TokenPairResDto> {
+  private async generateTokenPair(userId: UserID, deviceId: string): Promise<TokenPairResDto> {
     await this.deleteTokenPair(userId, deviceId);
 
     const tokenPair = await this.tokenService.generateTokenPair({
@@ -103,7 +95,7 @@ export class AuthService {
       this.authCacheService.saveToken(tokenPair.accessToken, userId, deviceId),
       this.refreshTokenRepository.save(
         this.refreshTokenRepository.create({
-          user_id: userId,
+          userId,
           deviceId,
           refreshToken: tokenPair.refreshToken,
         }),
@@ -113,15 +105,12 @@ export class AuthService {
     return tokenPair;
   }
 
-  private async deleteTokenPair(
-    userId: UserID,
-    deviceId?: string,
-  ): Promise<void> {
+  private async deleteTokenPair(userId: UserID, deviceId?: string): Promise<void> {
     if (deviceId) {
       await Promise.all([
         this.authCacheService.deleteToken(userId, deviceId),
         this.refreshTokenRepository.delete({
-          user_id: userId,
+          userId,
           deviceId,
         }),
       ]);
@@ -129,7 +118,7 @@ export class AuthService {
       await Promise.all([
         this.authCacheService.deleteAllTokens(userId),
         this.refreshTokenRepository.delete({
-          user_id: userId,
+          userId,
         }),
       ]);
     }

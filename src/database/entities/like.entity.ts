@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
 
 import { ArticleEntity } from './article.entity';
 import { EEntity } from './enums/entity.enum';
@@ -6,17 +6,18 @@ import { IdCreated } from './models/id-created-updated.model';
 import { ArticleID, LikeID, UserID } from './types/id.type';
 import { UserEntity } from './user.entity';
 
+@Index(['userId', 'articleId'], { unique: true })
 @Entity(EEntity.LIKES)
 export class LikeEntity extends IdCreated<LikeID> {
   @Column('uuid')
-  user_id: UserID;
+  userId: UserID;
   @ManyToOne(() => UserEntity, (entity) => entity.likes)
-  @JoinColumn({ name: 'user_id' })
+  @JoinColumn({ name: 'userId' })
   user?: UserEntity;
 
   @Column('uuid')
-  article_id: ArticleID;
+  articleId: ArticleID;
   @ManyToOne(() => ArticleEntity, (entity) => entity.likes)
-  @JoinColumn({ name: 'article_id' })
+  @JoinColumn({ name: 'articleId' })
   article?: ArticleEntity;
 }

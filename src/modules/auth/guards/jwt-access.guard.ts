@@ -1,10 +1,6 @@
-import {
-  CanActivate,
-  ExecutionContext,
-  Injectable,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { CanActivate, ExecutionContext, Injectable, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
+import { IsNull } from 'typeorm';
 
 import { UserRepository } from '../../repository/services/user.repository';
 import { UserMapper } from '../../users/presenters/user.mapper';
@@ -35,10 +31,7 @@ export class JwtAccessGuard implements CanActivate {
       throw new UnauthorizedException();
     }
 
-    const payload = await this.tokenService.verifyToken(
-      accessToken,
-      ETokenType.ACCESS,
-    );
+    const payload = await this.tokenService.verifyToken(accessToken, ETokenType.ACCESS);
     if (!payload) {
       throw new UnauthorizedException();
     }
@@ -54,6 +47,7 @@ export class JwtAccessGuard implements CanActivate {
 
     const user = await this.userRepository.findOneBy({
       id: payload.userId,
+      deleted: IsNull(),
     });
     if (!user) {
       throw new UnauthorizedException();

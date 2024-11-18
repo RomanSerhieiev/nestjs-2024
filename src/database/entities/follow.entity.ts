@@ -1,21 +1,22 @@
-import { Column, Entity, JoinColumn, ManyToOne } from 'typeorm';
+import { Column, Entity, Index, JoinColumn, ManyToOne } from 'typeorm';
 
 import { EEntity } from './enums/entity.enum';
 import { IdCreated } from './models/id-created-updated.model';
 import { FollowID, UserID } from './types/id.type';
 import { UserEntity } from './user.entity';
 
+@Index(['followerId', 'followingId'], { unique: true })
 @Entity(EEntity.FOLLOWS)
 export class FollowEntity extends IdCreated<FollowID> {
   @Column('uuid')
-  follower_id: UserID;
+  followerId: UserID;
   @ManyToOne(() => UserEntity, (entity) => entity.followings)
-  @JoinColumn({ name: 'follower_id' })
+  @JoinColumn({ name: 'followerId' })
   follower?: UserEntity;
 
   @Column('uuid')
-  following_id: UserID;
+  followingId: UserID;
   @ManyToOne(() => UserEntity, (entity) => entity.followers)
-  @JoinColumn({ name: 'following_id' })
+  @JoinColumn({ name: 'followingId' })
   following?: UserEntity;
 }

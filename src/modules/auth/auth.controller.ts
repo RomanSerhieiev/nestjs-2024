@@ -39,17 +39,13 @@ export class AuthController {
 
   @ApiBearerAuth()
   @Post('sign-out/current-device')
-  public async signOutCurrentDevice(
-    @CurrentUser() userData: IUserData,
-  ): Promise<void> {
+  public async signOutCurrentDevice(@CurrentUser() userData: IUserData): Promise<void> {
     return await this.authService.signOut(userData);
   }
 
   @ApiBearerAuth()
   @Post('sign-out/all-devices')
-  public async signOutAllDevices(
-    @CurrentUser() userData: IUserData,
-  ): Promise<void> {
+  public async signOutAllDevices(@CurrentUser() userData: IUserData): Promise<void> {
     return await this.authService.signOut(userData, true);
   }
 
@@ -57,13 +53,11 @@ export class AuthController {
   @ApiBearerAuth()
   @UseGuards(JwtRefreshGuard)
   @Post('refresh')
-  public async refresh(
-    @CurrentUser() userData: IUserData,
-  ): Promise<TokenPairResDto> {
+  public async refresh(@CurrentUser() userData: IUserData): Promise<TokenPairResDto> {
     return await this.authService.refresh(userData);
   }
 
-  @SkipAuth()
+  @ApiBearerAuth()
   @Post('password/change')
   public async changePassword(): Promise<any> {
     //TODO changePassword

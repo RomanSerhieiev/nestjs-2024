@@ -30,7 +30,7 @@ async function bootstrap() {
   SwaggerHelper.setDefaultResponses(document);
   SwaggerModule.setup('docs', app, document, {
     swaggerOptions: {
-      docExpansion: 'list',
+      docExpansion: 'none',
       defaultModelsExpandDepth: 8,
       persistAuthorization: true,
     },
@@ -51,6 +51,7 @@ async function bootstrap() {
     const url = `http://${appConfig.host}:${appConfig.port}`;
     Logger.log(`Server: ${url}`);
     Logger.log(`Swagger: ${url}/docs`);
+    Logger.log(`AWS: http://${appConfig.host}:8001`);
   });
 }
 

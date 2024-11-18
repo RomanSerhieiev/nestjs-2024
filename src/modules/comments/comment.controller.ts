@@ -1,12 +1,4 @@
-import {
-  Body,
-  Controller,
-  Delete,
-  Get,
-  Param,
-  Patch,
-  Post,
-} from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Patch, Post } from '@nestjs/common';
 import { ApiBearerAuth, ApiConflictResponse, ApiTags } from '@nestjs/swagger';
 
 import { CreateCommentReqDto } from './models/dto/req/create-comment.req.dto';
@@ -22,9 +14,7 @@ export class CommentController {
   @ApiBearerAuth()
   @ApiConflictResponse({ description: 'Conflict' })
   @Post()
-  public async create(
-    @Body() dto: CreateCommentReqDto,
-  ): Promise<CommentResDto> {
+  public async create(@Body() dto: CreateCommentReqDto): Promise<CommentResDto> {
     return await this.commentsService.create(dto);
   }
 
@@ -34,14 +24,14 @@ export class CommentController {
   }
 
   @Get(':id')
-  public async findOne(@Param('id') id: string): Promise<CommentResDto> {
+  public async findOne(@Param('id', ParseUUIDPipe) id: string): Promise<CommentResDto> {
     return await this.commentsService.findOne(+id);
   }
 
   @ApiBearerAuth()
   @Patch(':id')
   public async update(
-    @Param('id') id: string,
+    @Param('id', ParseUUIDPipe) id: string,
     @Body() dto: UpdateCommentReqDto,
   ): Promise<CommentResDto> {
     return await this.commentsService.update(+id, dto);
@@ -49,7 +39,7 @@ export class CommentController {
 
   @ApiBearerAuth()
   @Delete(':id')
-  public async remove(@Param('id') id: string): Promise<CommentResDto> {
+  public async remove(@Param('id', ParseUUIDPipe) id: string): Promise<CommentResDto> {
     return await this.commentsService.remove(+id);
   }
 }

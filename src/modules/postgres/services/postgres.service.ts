@@ -13,19 +13,10 @@ export class PostgresService implements TypeOrmOptionsFactory {
   constructor(private readonly configService: ConfigService<Config>) {}
 
   createTypeOrmOptions(): TypeOrmModuleOptions {
-    const postgresConfig = this.configService.get<PostgresConfig>(
-      EConfig.POSTGRES,
-    );
+    const postgresConfig = this.configService.get<PostgresConfig>(EConfig.POSTGRES);
     return getDataSourceOptions(
       postgresConfig,
-      path.join(
-        process.cwd(),
-        'dist',
-        'src',
-        'database',
-        'entities',
-        '*.entity.js',
-      ),
+      path.join(process.cwd(), 'dist', 'src', 'database', 'entities', '*.entity.js'),
       path.join(process.cwd(), 'dist', 'src', 'database', 'migrations', '*.js'),
     );
   }
